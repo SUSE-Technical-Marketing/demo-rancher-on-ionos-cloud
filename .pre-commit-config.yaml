@@ -28,3 +28,7 @@ repos:
       - id: tofu_fmt
       - id: tofu_tflint
       - id: tofu_validate
+  - repo: https://github.com/gitleaks/gitleaks
+    rev: v8.29.1
+    hooks:
+      - id: gitleaks
