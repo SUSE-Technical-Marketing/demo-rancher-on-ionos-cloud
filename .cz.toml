@@ -1,0 +1,11 @@
+# SPDX-FileCopyrightText: SUSE LLC
+#
+# SPDX-License-Identifier: Apache-2.0
+
+[tool.commitizen]
+name = "cz_conventional_commits"
+tag_format = "v$version"
+version_scheme = "semver"
+version = "0.0.1"
+update_changelog_on_bump = true
+changelog_incremental = true
