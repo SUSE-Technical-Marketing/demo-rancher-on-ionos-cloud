@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: SUSE LLC
+#
+# SPDX-License-Identifier: Apache-2.0
+
 [submodule "tf-rancher-up"]
 	path = tf-rancher-up
 	url = https://github.com/rancher/tf-rancher-up.git

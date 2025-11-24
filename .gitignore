@@ -1,0 +1,14 @@
+# SPDX-FileCopyrightText: SUSE LLC
+#
+# SPDX-License-Identifier: Apache-2.0
+
+*.swp
+.idea/
+.vscode/
+secret*
+.terraform
+*.tfstate
+.venv
+.env
+venv
+env
