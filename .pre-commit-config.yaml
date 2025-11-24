@@ -1,0 +1,30 @@
+# SPDX-FileCopyrightText: SUSE LLC
+#
+# SPDX-License-Identifier: Apache-2.0
+
+repos:
+  -   repo: https://github.com/pre-commit/pre-commit-hooks
+      rev: v6.0.0
+      hooks:
+        -   id: trailing-whitespace
+        -   id: end-of-file-fixer
+        -   id: check-yaml
+        -   id: check-added-large-files
+  -   repo: https://github.com/markdownlint/markdownlint
+      rev: v0.12.0
+      hooks:
+        -   id: markdownlint_docker
+  -   repo: https://github.com/fsfe/reuse-tool
+      rev: v6.2.0
+      hooks:
+        -   id: reuse
+  -   repo: https://github.com/commitizen-tools/commitizen
+      rev: v4.10.0
+      hooks:
+        -   id: commitizen
+  - repo: https://github.com/tofuutils/pre-commit-opentofu
+    rev: v2.2.2
+    hooks:
+      - id: tofu_fmt
+      - id: tofu_tflint
+      - id: tofu_validate
