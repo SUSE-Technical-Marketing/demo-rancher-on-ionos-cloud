@@ -22,3 +22,17 @@ variable "datacenter_description" {
   default     = "SUSE Rancher Prime on IONOS Cloud Demo"
   nullable    = false
 }
+
+variable "lan_public_name" {
+  type        = string
+  description = "Name of the public network"
+  default     = "public-network"
+  nullable    = false
+}
+
+variable "lan_private_name" {
+  type        = string
+  description = "Name of the private network"
+  default     = "private-network"
+  nullable    = false
+}
