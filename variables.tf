@@ -12,7 +12,7 @@ variable "datacenter_name" {
 variable "datacenter_location" {
   type        = string
   description = "Location / Region of the Virtual Data Center"
-  default     = "de/fra" # Available locations: de/fra, us/las, us/ewr, de/txl, gb/lhr, gb/bhx, es/vit, fr/par, us/mci, de/fra/2
+  default     = "de/fra" # Locations with SLES 15 images: de/fra, de/txl, de/fra/2
   nullable    = false
 }
 
@@ -35,4 +35,17 @@ variable "lan_private_name" {
   description = "Name of the private network"
   default     = "private-network"
   nullable    = false
+}
+
+variable "image_sles" {
+  type        = string
+  description = "Name of the SLES image to use for virtual machines"
+  default     = "sles:15sp7"
+  nullable    = false
+}
+
+variable "server_ssh_keys" {
+  type        = list(any)
+  description = "List of SSH public keys used when a virtual machine is deployed"
+  default     = []
 }

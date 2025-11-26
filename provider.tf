@@ -10,5 +10,9 @@ terraform {
       source  = "ionos-cloud/ionoscloud"
       version = "6.7.20"
     }
+    random = {
+      source  = "hashicorp/random"
+      version = "3.7.2"
+    }
   }
 }
