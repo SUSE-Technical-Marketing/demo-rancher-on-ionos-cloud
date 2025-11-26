@@ -11,3 +11,8 @@ output "server_rancher_ips" {
     }
   ]
 }
+
+output "sles_image_password" {
+  value     = random_password.sles_image_password
+  sensitive = true
+}
