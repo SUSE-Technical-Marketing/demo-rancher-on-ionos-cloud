@@ -7,9 +7,10 @@
 .vscode/
 secret*
 .terraform
-*.tfstate
+*.tfstate*
 .venv
 .env
 venv
 env
 .envrc
+*.tfvars
