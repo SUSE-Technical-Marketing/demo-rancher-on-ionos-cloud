@@ -12,3 +12,4 @@ secret*
 .env
 venv
 env
+.envrc
