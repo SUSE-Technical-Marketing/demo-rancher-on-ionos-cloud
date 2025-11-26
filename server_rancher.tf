@@ -20,6 +20,19 @@ resource "ionoscloud_server" "server_rancher" {
     disk_type         = "SSD Premium"
     bus               = "VIRTIO"
     availability_zone = "AUTO"
+    #user_data         = base64encode(local.cloud_init_user_data)
+    user_data = base64encode(<<EOF
+#cloud-config
+cloud_config_modules:
+- runcmd
+
+hostname: rancher${count.index}
+create_hostname_file: true
+
+runcmd:
+- SUSEConnect -r ${var.scc_registration_code} -e ${var.scc_registration_email}
+EOF
+    )
   }
   nic {
     lan  = ionoscloud_lan.public.id

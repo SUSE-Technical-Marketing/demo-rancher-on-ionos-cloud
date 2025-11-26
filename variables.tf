@@ -49,3 +49,15 @@ variable "server_ssh_keys" {
   description = "List of SSH public keys used when a virtual machine is deployed"
   default     = []
 }
+
+variable "scc_registration_code" {
+  type        = string
+  description = "SLES Registration Code"
+  nullable    = false
+}
+
+variable "scc_registration_email" {
+  type        = string
+  description = "SLES Registration Email"
+  nullable    = false
+}

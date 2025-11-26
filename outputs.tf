@@ -7,6 +7,7 @@ output "server_rancher_ips" {
     for i in ionoscloud_server.server_rancher[*] :
     {
       primary_ip = i.primary_ip
+      dns_name   = join(".", [i.name, i.primary_ip, "sslip.io"])
     }
   ]
 }
