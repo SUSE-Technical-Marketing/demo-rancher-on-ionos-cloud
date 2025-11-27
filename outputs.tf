@@ -6,8 +6,8 @@ output "server_rancher_ips" {
   value = [
     for i in ionoscloud_server.server_rancher[*] :
     {
-      primary_ip = i.primary_ip
-      dns_name   = join(".", [i.name, i.primary_ip, "sslip.io"])
+      ip  = i.primary_ip
+      dns = join(".", [i.name, i.primary_ip, "sslip.io"])
     }
   ]
 }
@@ -15,4 +15,14 @@ output "server_rancher_ips" {
 output "sles_image_password" {
   value     = random_password.sles_image_password
   sensitive = true
+}
+
+output "rancher_loadbalancer" {
+  value = [
+    {
+      ip  = ionoscloud_networkloadbalancer.lb_rancher.ips[0]
+      dns = join(".", ["rancher", ionoscloud_networkloadbalancer.lb_rancher.ips[0], "sslip.io"])
+    }
+  ]
+
 }

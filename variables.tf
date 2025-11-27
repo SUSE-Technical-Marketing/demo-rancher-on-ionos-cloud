@@ -61,3 +61,15 @@ variable "scc_registration_email" {
   description = "SLES Registration Email"
   nullable    = false
 }
+
+variable "rke2_version" {
+  type        = string
+  description = "Kubernetes version to use for the RKE2 cluster"
+  default     = null
+}
+
+variable "rke2_config" {
+  type        = string
+  description = "Additional RKE2 configuration to add to the config.yaml file"
+  default     = null
+}
