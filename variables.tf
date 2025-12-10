@@ -73,3 +73,21 @@ variable "rke2_config" {
   description = "Additional RKE2 configuration to add to the config.yaml file"
   default     = null
 }
+
+variable "server_rancher_cpu_cores" {
+  type        = string
+  description = "CPU cores assigned to Rancher Manager servers"
+  default     = "4"
+}
+
+variable "server_rancher_ram" {
+  type        = string
+  description = "RAM assigned to Rancher Manager servers"
+  default     = "16384"
+}
+
+variable "server_rancher_disk_size" {
+  type        = string
+  description = "Disk size assigned to Rancher Manager servers"
+  default     = "600"
+}

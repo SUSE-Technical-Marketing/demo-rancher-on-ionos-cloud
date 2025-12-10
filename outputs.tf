@@ -2,12 +2,35 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
-output "server_rancher_ips" {
+output "server_rancher_first" {
   value = [
-    for i in ionoscloud_server.server_rancher[*] :
     {
-      ip  = i.primary_ip
-      dns = join(".", [i.name, i.primary_ip, "sslip.io"])
+      ip = ionoscloud_server.server_rancher_first.primary_ip
+
+      ip_private = ionoscloud_nic.private_nic[0].ips[0]
+
+      dns = join(".", [
+        ionoscloud_server.server_rancher_first.name,
+        ionoscloud_server.server_rancher_first.primary_ip,
+        "sslip.io"
+      ])
+    }
+  ]
+}
+
+output "server_rancher_additional" {
+  value = [
+    for i in range(length(ionoscloud_server.server_rancher_additional)) :
+    {
+      ip = ionoscloud_server.server_rancher_additional[i].primary_ip
+
+      ip_private = ionoscloud_nic.private_nic[i].ips[0]
+
+      dns = join(".", [
+        ionoscloud_server.server_rancher_additional[i].name,
+        ionoscloud_server.server_rancher_additional[i].primary_ip,
+        "sslip.io"
+      ])
     }
   ]
 }
@@ -24,5 +47,4 @@ output "rancher_loadbalancer" {
       dns = join(".", ["rancher", ionoscloud_networkloadbalancer.lb_rancher.ips[0], "sslip.io"])
     }
   ]
-
 }
