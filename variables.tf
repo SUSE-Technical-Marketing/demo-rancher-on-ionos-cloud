@@ -100,6 +100,24 @@ variable "server_rancher_disk_size" {
   default     = "600"
 }
 
+variable "bootstrap_rancher" {
+  description = "Bootstrap the Rancher installation"
+  default     = true
+  type        = bool
+}
+
+variable "rancher_namespace" {
+  description = "The Rancher release will be deployed to this namespace"
+  type        = string
+  default     = "cattle-system"
+}
+
+variable "rancher_antiaffinity" {
+  description = "Value for antiAffinity when installing the Rancher helm chart (required/preferred)"
+  default     = "required"
+  type        = string
+}
+
 variable "rancher_bootstrap_password" {
   description = "Password to use when bootstrapping Rancher (min 12 characters)"
   default     = null
@@ -153,12 +171,6 @@ variable "rancher_helm_repository_password" {
   type        = string
 }
 
-variable "cert_manager_helm_repository" {
-  description = "Helm repository for Cert Manager chart"
-  default     = null
-  type        = string
-}
-
 variable "rancher_helm_atomic" {
   description = "Purge cert-manager chart on fail"
   default     = false
@@ -169,6 +181,40 @@ variable "rancher_helm_upgrade_install" {
   description = "Install the release even if a release not controlled by the provider is present. Equivalent to running 'helm upgrade --install'"
   default     = true
   type        = bool
+}
+
+variable "rancher_additional_helm_values" {
+  description = "Helm options to provide to the Rancher helm chart"
+  default     = []
+  type        = list(string)
+}
+
+variable "cert_manager_enable" {
+  description = "Install cert-manager even if not needed for Rancher, useful if migrating to certificates"
+  default     = true
+  type        = bool
+}
+
+variable "cert_manager_namespace" {
+  description = "Namespace to install cert-manager"
+  default     = "cert-manager"
+  type        = string
+}
+
+variable "cert_manager_version" {
+  description = "Version of cert-manager to install"
+  # Fails on >=1.16.0 with 'installCRDs: Invalid type. Expected: boolean, given: string' in tf-rancher-up/modules/rancher/main.tf line 91
+  # schema that demands bool introduced, see:
+  # https://github.com/cert-manager/cert-manager/blob/v1.16.0/deploy/charts/cert-manager/values.schema.json
+  default  = "1.15.5"
+  type     = string
+  nullable = false
+}
+
+variable "cert_manager_helm_repository" {
+  description = "Helm repository for Cert Manager chart"
+  default     = null
+  type        = string
 }
 
 variable "cert_manager_helm_repository_username" {
@@ -209,7 +255,7 @@ variable "registry_password" {
 
 variable "tls_source" {
   description = "Value for ingress.tls.source when installing the Rancher helm chart. Options: rancher, letsEncrypt, secret"
-  default     = "letsencrypt"
+  default     = "letsEncrypt"
   type        = string
 }
 
@@ -235,19 +281,6 @@ variable "tls_key_path" {
   description = "TLS key to use for Rancher UI/API connectivity"
   default     = null
   type        = string
-}
-
-variable "cert_manager_version" {
-  description = "Version of cert-manager to install"
-  default     = "1.19.2"
-  type        = string
-  nullable    = false
-}
-
-variable "rancher_additional_helm_values" {
-  description = "Helm options to provide to the Rancher helm chart"
-  default     = []
-  type        = list(string)
 }
 
 variable "helm_timeout" {
