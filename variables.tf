@@ -72,7 +72,8 @@ variable "scc_registration_email" {
 variable "rke2_version" {
   type        = string
   description = "Kubernetes version to use for the RKE2 cluster"
-  default     = null
+  default     = "v1.34.2+rke2r1"
+  nullable    = false
 }
 
 variable "rke2_config" {
@@ -101,11 +102,11 @@ variable "server_rancher_disk_size" {
 
 variable "rancher_bootstrap_password" {
   description = "Password to use when bootstrapping Rancher (min 12 characters)"
-  default     = "initial-bootstrap-password"
+  default     = null
   type        = string
 
   validation {
-    condition     = length(var.rancher_bootstrap_password) >= 12
+    condition     = var.rancher_bootstrap_password == null ? true : length(var.rancher_bootstrap_password) >= 12
     error_message = "The password provided for Rancher (rancher_bootstrap_password) must be at least 12 characters"
   }
 }
@@ -123,8 +124,9 @@ variable "rancher_password" {
 
 variable "rancher_version" {
   description = "Rancher version to install"
-  default     = null
+  default     = "2.13.0"
   type        = string
+  nullable    = false
 }
 
 variable "rancher_replicas" {
@@ -157,6 +159,18 @@ variable "cert_manager_helm_repository" {
   type        = string
 }
 
+variable "rancher_helm_atomic" {
+  description = "Purge cert-manager chart on fail"
+  default     = false
+  type        = bool
+}
+
+variable "rancher_helm_upgrade_install" {
+  description = "Install the release even if a release not controlled by the provider is present. Equivalent to running 'helm upgrade --install'"
+  default     = true
+  type        = bool
+}
+
 variable "cert_manager_helm_repository_username" {
   description = "Private Cert Manager helm repository username"
   default     = null
@@ -167,4 +181,77 @@ variable "cert_manager_helm_repository_password" {
   description = "Private Cert Manager helm repository password"
   default     = null
   type        = string
+}
+
+variable "cert_manager_helm_atomic" {
+  description = "Purge cert-manager chart on fail"
+  default     = false
+  type        = bool
+}
+
+variable "cert_manager_helm_upgrade_install" {
+  description = "Install the release even if a release not controlled by the provider is present. Equivalent to running 'helm upgrade --install'"
+  default     = true
+  type        = bool
+}
+
+variable "registry_username" {
+  description = "Private container image registry username"
+  default     = null
+  type        = string
+}
+
+variable "registry_password" {
+  description = "Private container image registry password"
+  default     = null
+  type        = string
+}
+
+variable "tls_source" {
+  description = "Value for ingress.tls.source when installing the Rancher helm chart. Options: rancher, letsEncrypt, secret"
+  default     = "letsencrypt"
+  type        = string
+}
+
+variable "letsencrypt_environment" {
+  description = "Let's Encrypt environment to use staging or production"
+  default     = "production"
+  type        = string
+}
+
+variable "cacerts_path" {
+  default     = null
+  description = "Private CA certificate to use for Rancher UI/API connectivity"
+  type        = string
+}
+
+variable "tls_crt_path" {
+  description = "TLS certificate to use for Rancher UI/API connectivity"
+  default     = null
+  type        = string
+}
+
+variable "tls_key_path" {
+  description = "TLS key to use for Rancher UI/API connectivity"
+  default     = null
+  type        = string
+}
+
+variable "cert_manager_version" {
+  description = "Version of cert-manager to install"
+  default     = "1.19.2"
+  type        = string
+  nullable    = false
+}
+
+variable "rancher_additional_helm_values" {
+  description = "Helm options to provide to the Rancher helm chart"
+  default     = []
+  type        = list(string)
+}
+
+variable "helm_timeout" {
+  description = "Specify the timeout value in seconds for helm operation(s)"
+  default     = 600
+  type        = number
 }
