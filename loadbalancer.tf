@@ -15,8 +15,10 @@ resource "ionoscloud_networkloadbalancer" "lb_rancher" {
 }
 
 locals {
+  first_server_private_ip = ionoscloud_nic.private_nic_first.ips[0]
+
   lb_rancher_target_ips = concat(
-    [ionoscloud_nic.private_nic_first.ips[0]],
+    [local.first_server_private_ip],
     [for nic in ionoscloud_nic.private_nic : nic.ips[0]]
   )
 }
@@ -34,10 +36,10 @@ resource "ionoscloud_networkloadbalancer_forwardingrule" "lb_rancher_rule_https"
     content {
       ip     = targets.value
       port   = "443"
-      weight = "1"
+      weight = targets.value == local.first_server_private_ip ? 100 : 1
       health_check {
         check          = true
-        check_interval = 1000
+        check_interval = 3000
         maintenance    = false
       }
     }
@@ -57,10 +59,10 @@ resource "ionoscloud_networkloadbalancer_forwardingrule" "lb_rancher_rule_http" 
     content {
       ip     = targets.value
       port   = "80"
-      weight = "1"
+      weight = targets.value == local.first_server_private_ip ? 100 : 1
       health_check {
         check          = true
-        check_interval = 1000
+        check_interval = 3000
         maintenance    = false
       }
     }
@@ -80,10 +82,10 @@ resource "ionoscloud_networkloadbalancer_forwardingrule" "lb_rancher_rule_rke2" 
     content {
       ip     = targets.value
       port   = "9345"
-      weight = "1"
+      weight = targets.value == local.first_server_private_ip ? 100 : 1
       health_check {
         check          = true
-        check_interval = 1000
+        check_interval = 3000
         maintenance    = false
       }
     }
@@ -103,10 +105,10 @@ resource "ionoscloud_networkloadbalancer_forwardingrule" "lb_rancher_rule_k8s" {
     content {
       ip     = targets.value
       port   = "6443"
-      weight = "1"
+      weight = targets.value == local.first_server_private_ip ? 100 : 1
       health_check {
         check          = true
-        check_interval = 1000
+        check_interval = 3000
         maintenance    = false
       }
     }
