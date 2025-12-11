@@ -157,6 +157,7 @@ cd ..
 | <a name="requirement_local"></a> [local](#requirement\_local) | 2.6.1 |
 | <a name="requirement_random"></a> [random](#requirement\_random) | 3.7.2 |
 | <a name="requirement_ssh"></a> [ssh](#requirement\_ssh) | 2.7.0 |
+| <a name="requirement_time"></a> [time](#requirement\_time) | 0.13.1 |
 
 ### Providers
 
@@ -167,6 +168,7 @@ cd ..
 | <a name="provider_local"></a> [local](#provider\_local) | 2.6.1 |
 | <a name="provider_random"></a> [random](#provider\_random) | 3.7.2 |
 | <a name="provider_ssh"></a> [ssh](#provider\_ssh) | 2.7.0 |
+| <a name="provider_time"></a> [time](#provider\_time) | 0.13.1 |
 
 ### Modules
 
@@ -186,10 +188,10 @@ cd ..
 | [ionoscloud_lan.private](https://registry.terraform.io/providers/ionos-cloud/ionoscloud/6.7.20/docs/resources/lan) | resource |
 | [ionoscloud_lan.public](https://registry.terraform.io/providers/ionos-cloud/ionoscloud/6.7.20/docs/resources/lan) | resource |
 | [ionoscloud_networkloadbalancer.lb_rancher](https://registry.terraform.io/providers/ionos-cloud/ionoscloud/6.7.20/docs/resources/networkloadbalancer) | resource |
-| [ionoscloud_networkloadbalancer_forwardingrule.lb_rancher_rule1](https://registry.terraform.io/providers/ionos-cloud/ionoscloud/6.7.20/docs/resources/networkloadbalancer_forwardingrule) | resource |
-| [ionoscloud_networkloadbalancer_forwardingrule.lb_rancher_rule2](https://registry.terraform.io/providers/ionos-cloud/ionoscloud/6.7.20/docs/resources/networkloadbalancer_forwardingrule) | resource |
-| [ionoscloud_networkloadbalancer_forwardingrule.lb_rancher_rule3](https://registry.terraform.io/providers/ionos-cloud/ionoscloud/6.7.20/docs/resources/networkloadbalancer_forwardingrule) | resource |
-| [ionoscloud_networkloadbalancer_forwardingrule.lb_rancher_rule4](https://registry.terraform.io/providers/ionos-cloud/ionoscloud/6.7.20/docs/resources/networkloadbalancer_forwardingrule) | resource |
+| [ionoscloud_networkloadbalancer_forwardingrule.lb_rancher_rule_http](https://registry.terraform.io/providers/ionos-cloud/ionoscloud/6.7.20/docs/resources/networkloadbalancer_forwardingrule) | resource |
+| [ionoscloud_networkloadbalancer_forwardingrule.lb_rancher_rule_https](https://registry.terraform.io/providers/ionos-cloud/ionoscloud/6.7.20/docs/resources/networkloadbalancer_forwardingrule) | resource |
+| [ionoscloud_networkloadbalancer_forwardingrule.lb_rancher_rule_k8s](https://registry.terraform.io/providers/ionos-cloud/ionoscloud/6.7.20/docs/resources/networkloadbalancer_forwardingrule) | resource |
+| [ionoscloud_networkloadbalancer_forwardingrule.lb_rancher_rule_rke2](https://registry.terraform.io/providers/ionos-cloud/ionoscloud/6.7.20/docs/resources/networkloadbalancer_forwardingrule) | resource |
 | [ionoscloud_nic.private_nic](https://registry.terraform.io/providers/ionos-cloud/ionoscloud/6.7.20/docs/resources/nic) | resource |
 | [ionoscloud_nic.private_nic_first](https://registry.terraform.io/providers/ionos-cloud/ionoscloud/6.7.20/docs/resources/nic) | resource |
 | [ionoscloud_server.server_rancher_additional](https://registry.terraform.io/providers/ionos-cloud/ionoscloud/6.7.20/docs/resources/server) | resource |
@@ -197,7 +199,9 @@ cd ..
 | [local_file.kube_config_yaml](https://registry.terraform.io/providers/hashicorp/local/2.6.1/docs/resources/file) | resource |
 | [random_password.sles_image_password](https://registry.terraform.io/providers/hashicorp/random/3.7.2/docs/resources/password) | resource |
 | [random_password.token](https://registry.terraform.io/providers/hashicorp/random/3.7.2/docs/resources/password) | resource |
+| [ssh_resource.reboot_first_server](https://registry.terraform.io/providers/loafoe/ssh/2.7.0/docs/resources/resource) | resource |
 | [ssh_resource.retrieve_kubeconfig](https://registry.terraform.io/providers/loafoe/ssh/2.7.0/docs/resources/resource) | resource |
+| [time_sleep.wait_for_lb_propagation](https://registry.terraform.io/providers/hashicorp/time/0.13.1/docs/resources/sleep) | resource |
 | [cloudinit_config.server_rancher_additional](https://registry.terraform.io/providers/hashicorp/cloudinit/2.3.7/docs/data-sources/config) | data source |
 | [cloudinit_config.server_rancher_first](https://registry.terraform.io/providers/hashicorp/cloudinit/2.3.7/docs/data-sources/config) | data source |
 | [ionoscloud_image.sles](https://registry.terraform.io/providers/ionos-cloud/ionoscloud/6.7.20/docs/data-sources/image) | data source |
@@ -206,13 +210,16 @@ cd ..
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| <a name="input_bootstrap_rancher"></a> [bootstrap\_rancher](#input\_bootstrap\_rancher) | Bootstrap the Rancher installation | `bool` | `true` | no |
 | <a name="input_cacerts_path"></a> [cacerts\_path](#input\_cacerts\_path) | Private CA certificate to use for Rancher UI/API connectivity | `string` | `null` | no |
+| <a name="input_cert_manager_enable"></a> [cert\_manager\_enable](#input\_cert\_manager\_enable) | Install cert-manager even if not needed for Rancher, useful if migrating to certificates | `bool` | `true` | no |
 | <a name="input_cert_manager_helm_atomic"></a> [cert\_manager\_helm\_atomic](#input\_cert\_manager\_helm\_atomic) | Purge cert-manager chart on fail | `bool` | `false` | no |
 | <a name="input_cert_manager_helm_repository"></a> [cert\_manager\_helm\_repository](#input\_cert\_manager\_helm\_repository) | Helm repository for Cert Manager chart | `string` | `null` | no |
 | <a name="input_cert_manager_helm_repository_password"></a> [cert\_manager\_helm\_repository\_password](#input\_cert\_manager\_helm\_repository\_password) | Private Cert Manager helm repository password | `string` | `null` | no |
 | <a name="input_cert_manager_helm_repository_username"></a> [cert\_manager\_helm\_repository\_username](#input\_cert\_manager\_helm\_repository\_username) | Private Cert Manager helm repository username | `string` | `null` | no |
 | <a name="input_cert_manager_helm_upgrade_install"></a> [cert\_manager\_helm\_upgrade\_install](#input\_cert\_manager\_helm\_upgrade\_install) | Install the release even if a release not controlled by the provider is present. Equivalent to running 'helm upgrade --install' | `bool` | `true` | no |
-| <a name="input_cert_manager_version"></a> [cert\_manager\_version](#input\_cert\_manager\_version) | Version of cert-manager to install | `string` | `"1.19.2"` | no |
+| <a name="input_cert_manager_namespace"></a> [cert\_manager\_namespace](#input\_cert\_manager\_namespace) | Namespace to install cert-manager | `string` | `"cert-manager"` | no |
+| <a name="input_cert_manager_version"></a> [cert\_manager\_version](#input\_cert\_manager\_version) | Version of cert-manager to install | `string` | `"1.15.5"` | no |
 | <a name="input_datacenter_description"></a> [datacenter\_description](#input\_datacenter\_description) | Virtual Data Center description | `string` | `"SUSE Rancher Prime on IONOS Cloud Demo"` | no |
 | <a name="input_datacenter_location"></a> [datacenter\_location](#input\_datacenter\_location) | Location / Region of the Virtual Data Center | `string` | `"de/fra"` | no |
 | <a name="input_datacenter_name"></a> [datacenter\_name](#input\_datacenter\_name) | Name of the Virtual Data Center | `string` | `"demo-rancher-on-ionos-cloud"` | no |
@@ -223,12 +230,14 @@ cd ..
 | <a name="input_lan_public_name"></a> [lan\_public\_name](#input\_lan\_public\_name) | Name of the public network | `string` | `"public-network"` | no |
 | <a name="input_letsencrypt_environment"></a> [letsencrypt\_environment](#input\_letsencrypt\_environment) | Let's Encrypt environment to use staging or production | `string` | `"production"` | no |
 | <a name="input_rancher_additional_helm_values"></a> [rancher\_additional\_helm\_values](#input\_rancher\_additional\_helm\_values) | Helm options to provide to the Rancher helm chart | `list(string)` | `[]` | no |
+| <a name="input_rancher_antiaffinity"></a> [rancher\_antiaffinity](#input\_rancher\_antiaffinity) | Value for antiAffinity when installing the Rancher helm chart (required/preferred) | `string` | `"required"` | no |
 | <a name="input_rancher_bootstrap_password"></a> [rancher\_bootstrap\_password](#input\_rancher\_bootstrap\_password) | Password to use when bootstrapping Rancher (min 12 characters) | `string` | `null` | no |
 | <a name="input_rancher_helm_atomic"></a> [rancher\_helm\_atomic](#input\_rancher\_helm\_atomic) | Purge cert-manager chart on fail | `bool` | `false` | no |
 | <a name="input_rancher_helm_repository"></a> [rancher\_helm\_repository](#input\_rancher\_helm\_repository) | Helm repository for Rancher chart | `string` | `null` | no |
 | <a name="input_rancher_helm_repository_password"></a> [rancher\_helm\_repository\_password](#input\_rancher\_helm\_repository\_password) | Private Rancher helm repository password | `string` | `null` | no |
 | <a name="input_rancher_helm_repository_username"></a> [rancher\_helm\_repository\_username](#input\_rancher\_helm\_repository\_username) | Private Rancher helm repository username | `string` | `null` | no |
 | <a name="input_rancher_helm_upgrade_install"></a> [rancher\_helm\_upgrade\_install](#input\_rancher\_helm\_upgrade\_install) | Install the release even if a release not controlled by the provider is present. Equivalent to running 'helm upgrade --install' | `bool` | `true` | no |
+| <a name="input_rancher_namespace"></a> [rancher\_namespace](#input\_rancher\_namespace) | The Rancher release will be deployed to this namespace | `string` | `"cattle-system"` | no |
 | <a name="input_rancher_password"></a> [rancher\_password](#input\_rancher\_password) | Password for the Rancher admin account (min 12 characters) | `string` | `null` | no |
 | <a name="input_rancher_replicas"></a> [rancher\_replicas](#input\_rancher\_replicas) | Value for replicas when installing the Rancher helm chart | `number` | `3` | no |
 | <a name="input_rancher_version"></a> [rancher\_version](#input\_rancher\_version) | Rancher version to install | `string` | `"2.13.0"` | no |
@@ -244,7 +253,7 @@ cd ..
 | <a name="input_server_ssh_keys"></a> [server\_ssh\_keys](#input\_server\_ssh\_keys) | List of SSH public keys used when a virtual machine is deployed | `list(any)` | `[]` | no |
 | <a name="input_tls_crt_path"></a> [tls\_crt\_path](#input\_tls\_crt\_path) | TLS certificate to use for Rancher UI/API connectivity | `string` | `null` | no |
 | <a name="input_tls_key_path"></a> [tls\_key\_path](#input\_tls\_key\_path) | TLS key to use for Rancher UI/API connectivity | `string` | `null` | no |
-| <a name="input_tls_source"></a> [tls\_source](#input\_tls\_source) | Value for ingress.tls.source when installing the Rancher helm chart. Options: rancher, letsEncrypt, secret | `string` | `"letsencrypt"` | no |
+| <a name="input_tls_source"></a> [tls\_source](#input\_tls\_source) | Value for ingress.tls.source when installing the Rancher helm chart. Options: rancher, letsEncrypt, secret | `string` | `"letsEncrypt"` | no |
 
 ### Outputs
 
