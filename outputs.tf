@@ -3,6 +3,7 @@
 # SPDX-License-Identifier: Apache-2.0
 
 output "server_rancher_first" {
+  description = "Public, Private IP and DNS name of the first Rancher Node"
   value = [
     {
       ip = ionoscloud_server.server_rancher_first.primary_ip
@@ -19,6 +20,7 @@ output "server_rancher_first" {
 }
 
 output "server_rancher_additional" {
+  description = "Public, Private IP and DNS name of the additional Rancher Nodes"
   value = [
     for i in range(length(ionoscloud_server.server_rancher_additional)) :
     {
@@ -36,11 +38,13 @@ output "server_rancher_additional" {
 }
 
 output "sles_image_password" {
-  value     = random_password.sles_image_password
-  sensitive = true
+  description = "root User Password for SSH access as backup to ssh keys"
+  value       = random_password.sles_image_password
+  sensitive   = true
 }
 
 output "rancher_loadbalancer" {
+  description = "Public IP and DNS name of the Load Balancer in front of the Rancher Manager Cluster"
   value = [
     {
       ip  = ionoscloud_networkloadbalancer.lb_rancher.ips[0]
