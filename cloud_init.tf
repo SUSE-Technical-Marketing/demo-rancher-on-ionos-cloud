@@ -59,6 +59,7 @@ data "cloudinit_config" "server_rancher_additional" {
       - SUSEConnect -r ${var.scc_registration_code} -e ${var.scc_registration_email}
       - zypper ref && zypper --non-interactive in iptables
       - zypper --non-interactive dup
+      - reboot
     EOT
   }
 }
