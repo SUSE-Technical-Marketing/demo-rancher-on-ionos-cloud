@@ -8,7 +8,7 @@ output "server_rancher_first" {
     {
       ip = ionoscloud_server.server_rancher_first.primary_ip
 
-      ip_private = ionoscloud_nic.private_nic[0].ips[0]
+      ip_private = ionoscloud_nic.private_nic_first.ips[0]
 
       dns = join(".", [
         ionoscloud_server.server_rancher_first.name,
