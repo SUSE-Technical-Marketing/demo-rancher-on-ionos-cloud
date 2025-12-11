@@ -76,7 +76,7 @@ data "cloudinit_config" "server_rancher_additional" {
         - path: /opt/rke2-install.sh
           permissions: '0755'
           encoding: b64
-          content: ${base64encode(module.rke2_first.rke2_user_data)}
+          content: ${base64encode(module.rke2_additional.rke2_user_data)}
 
         - path: /etc/systemd/system/rke2-installer.service
           permissions: '0644'
