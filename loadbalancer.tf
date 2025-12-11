@@ -21,7 +21,7 @@ locals {
   )
 }
 
-resource "ionoscloud_networkloadbalancer_forwardingrule" "lb_rancher_rule1" {
+resource "ionoscloud_networkloadbalancer_forwardingrule" "lb_rancher_rule_https" {
   datacenter_id          = ionoscloud_datacenter.vdc.id
   networkloadbalancer_id = ionoscloud_networkloadbalancer.lb_rancher.id
   name                   = "Rancher Manager - https"
@@ -44,7 +44,7 @@ resource "ionoscloud_networkloadbalancer_forwardingrule" "lb_rancher_rule1" {
   }
 }
 
-resource "ionoscloud_networkloadbalancer_forwardingrule" "lb_rancher_rule2" {
+resource "ionoscloud_networkloadbalancer_forwardingrule" "lb_rancher_rule_http" {
   datacenter_id          = ionoscloud_datacenter.vdc.id
   networkloadbalancer_id = ionoscloud_networkloadbalancer.lb_rancher.id
   name                   = "Rancher Manager - http"
@@ -67,7 +67,7 @@ resource "ionoscloud_networkloadbalancer_forwardingrule" "lb_rancher_rule2" {
   }
 }
 
-resource "ionoscloud_networkloadbalancer_forwardingrule" "lb_rancher_rule3" {
+resource "ionoscloud_networkloadbalancer_forwardingrule" "lb_rancher_rule_rke2" {
   datacenter_id          = ionoscloud_datacenter.vdc.id
   networkloadbalancer_id = ionoscloud_networkloadbalancer.lb_rancher.id
   name                   = "Rancher Manager - RKE2"
@@ -90,7 +90,7 @@ resource "ionoscloud_networkloadbalancer_forwardingrule" "lb_rancher_rule3" {
   }
 }
 
-resource "ionoscloud_networkloadbalancer_forwardingrule" "lb_rancher_rule4" {
+resource "ionoscloud_networkloadbalancer_forwardingrule" "lb_rancher_rule_k8s" {
   datacenter_id          = ionoscloud_datacenter.vdc.id
   networkloadbalancer_id = ionoscloud_networkloadbalancer.lb_rancher.id
   name                   = "Rancher Manager - K8S API"

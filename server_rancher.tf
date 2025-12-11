@@ -2,63 +2,6 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
-resource "random_password" "token" {
-  length  = 40
-  special = false
-}
-
-module "rke2_first" {
-  source       = "./tf-rancher-up/modules/distribution/rke2"
-  rke2_token   = random_password.token.result
-  rke2_version = var.rke2_version
-  rke2_config  = <<-EOT
-      - ${join(".", ["rancher", ionoscloud_networkloadbalancer.lb_rancher.ips[0], "sslip.io"])}
-      - ${ionoscloud_networkloadbalancer.lb_rancher.ips[0]}
-    ${var.rke2_config == null ? "" : var.rke2_config}
-  EOT
-}
-
-module "rke2_additional" {
-  source          = "./tf-rancher-up/modules/distribution/rke2"
-  rke2_token      = random_password.token.result
-  rke2_version    = var.rke2_version
-  rke2_config     = <<-EOT
-      - ${join(".", ["rancher", ionoscloud_networkloadbalancer.lb_rancher.ips[0], "sslip.io"])}
-      - ${ionoscloud_networkloadbalancer.lb_rancher.ips[0]}
-    ${var.rke2_config == null ? "" : var.rke2_config}
-  EOT
-  first_server_ip = ionoscloud_networkloadbalancer.lb_rancher.ips[0]
-}
-
-data "cloudinit_config" "server_rancher_first" {
-  gzip          = false
-  base64_encode = true
-
-  part {
-    filename     = "rke2.sh"
-    content_type = "text/x-shellscript"
-
-    content = module.rke2_first.rke2_user_data
-  }
-
-  part {
-    filename     = "cloud-config.yaml"
-    content_type = "text/cloud-config"
-
-    content = <<-EOT
-      #cloud-config
-      hostname: rancher0
-      create_hostname_file: true
-      prefer_fqdn_over_hostname: false
-
-      runcmd:
-      - SUSEConnect -r ${var.scc_registration_code} -e ${var.scc_registration_email}
-      - zypper ref && zypper --non-interactive in iptables
-      - zypper --non-interactive dup
-    EOT
-  }
-}
-
 resource "ionoscloud_server" "server_rancher_first" {
   name              = "rancher0"
   datacenter_id     = ionoscloud_datacenter.vdc.id
@@ -91,37 +34,6 @@ resource "ionoscloud_nic" "private_nic_first" {
   datacenter_id = ionoscloud_datacenter.vdc.id
   lan           = ionoscloud_lan.private.id
   server_id     = ionoscloud_server.server_rancher_first.id
-}
-
-data "cloudinit_config" "server_rancher_additional" {
-  count = 2
-
-  gzip          = false
-  base64_encode = true
-
-  part {
-    filename     = "rke2.sh"
-    content_type = "text/x-shellscript"
-
-    content = module.rke2_additional.rke2_user_data
-  }
-
-  part {
-    filename     = "cloud-config.yaml"
-    content_type = "text/cloud-config"
-
-    content = <<-EOT
-      #cloud-config
-      hostname: rancher${count.index + 1}
-      create_hostname_file: true
-      prefer_fqdn_over_hostname: false
-
-      runcmd:
-      - SUSEConnect -r ${var.scc_registration_code} -e ${var.scc_registration_email}
-      - zypper ref && zypper --non-interactive in iptables
-      - zypper --non-interactive dup
-    EOT
-  }
 }
 
 resource "ionoscloud_server" "server_rancher_additional" {

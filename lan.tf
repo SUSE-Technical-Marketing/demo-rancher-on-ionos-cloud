@@ -13,15 +13,3 @@ resource "ionoscloud_lan" "private" {
   public        = false
   name          = var.lan_private_name
 }
-
-resource "ionoscloud_ipblock" "ip_lb_rancher" {
-  location = var.datacenter_location
-  size     = 1
-  name     = "IP Block for Rancher Load Balancer"
-}
-
-resource "ionoscloud_ipblock" "ip_server_rancher_first" {
-  location = var.datacenter_location
-  size     = 1
-  name     = "IP Block for first Rancher Server"
-}
