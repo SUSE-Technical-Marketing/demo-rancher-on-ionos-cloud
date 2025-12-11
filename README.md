@@ -20,6 +20,7 @@ and modules from [tf-rancher-up](https://github.com/rancher/tf-rancher-up).
 * [Overview](#overview)
 * [Usage](#usage)
 * [Documentation](#documentation)
+* [Development](#development)
 * [License](#license)
 
 ## Overview
@@ -198,6 +199,13 @@ section below. Including its [Inputs](#Inputs) and [Outputs](#Outputs).
 | <a name="output_server_rancher_first"></a> [server\_rancher\_first](#output\_server\_rancher\_first) | Public, Private IP and DNS name of the first Rancher Node |
 | <a name="output_sles_image_password"></a> [sles\_image\_password](#output\_sles\_image\_password) | root User Password for SSH access as backup to ssh keys |
 <!-- END_TF_DOCS -->
+
+## Development
+
+[Makefile](Makefile) commands:
+
+* `docs`: Generate tf docs and inject in README.md
+* `release`: Bump the version, generate a Changelog, tag and push to remote
 
 ## License
 
