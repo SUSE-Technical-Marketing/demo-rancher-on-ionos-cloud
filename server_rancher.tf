@@ -60,8 +60,6 @@ data "cloudinit_config" "server_rancher_first" {
 }
 
 resource "ionoscloud_server" "server_rancher_first" {
-  depends_on = [ionoscloud_networkloadbalancer.lb_rancher]
-
   name              = "rancher0"
   datacenter_id     = ionoscloud_datacenter.vdc.id
   cores             = var.server_rancher_cpu_cores
@@ -84,6 +82,7 @@ resource "ionoscloud_server" "server_rancher_first" {
     lan  = ionoscloud_lan.public.id
     name = "public"
     dhcp = true
+    ips  = [ionoscloud_ipblock.ip_server_rancher_first.ips[0]]
   }
 }
 
@@ -127,7 +126,7 @@ data "cloudinit_config" "server_rancher_additional" {
 
 resource "ionoscloud_server" "server_rancher_additional" {
   count      = 2
-  depends_on = [module.rke2_first]
+  depends_on = [ionoscloud_nic.private_nic_first]
 
   name              = "rancher${count.index + 1}"
   datacenter_id     = ionoscloud_datacenter.vdc.id
