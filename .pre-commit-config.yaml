@@ -18,6 +18,7 @@ repos:
       hooks:
         -   id: markdownlint_docker
             args: ["--rules", "~MD033,~MD013"] # exclude rules: MD013 Line length, MD033 Inline HTML
+            exclude: CHANGELOG.md
   -   repo: https://github.com/fsfe/reuse-tool
       rev: v6.2.0
       hooks:
