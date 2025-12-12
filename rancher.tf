@@ -15,9 +15,9 @@ resource "time_sleep" "wait_for_lb_propagation" {
     ionoscloud_networkloadbalancer_forwardingrule.lb_rancher_rule_rke2
   ]
 
-  # Give the LB Rules and the Cluster Nodes 300 sec to settle
-  # Having all RKE2 nodes ready took 3-5 minutes in test deployments
-  create_duration = "300s"
+  # Give the LB Rules and the Cluster Nodes time to settle
+  # RKE2 nodes ready took on average 2 minutes in test deployments after this stage
+  create_duration = "120s"
 }
 
 resource "ssh_resource" "retrieve_kubeconfig" {
