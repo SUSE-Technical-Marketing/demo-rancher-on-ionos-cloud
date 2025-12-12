@@ -9,6 +9,9 @@ SPDX-License-Identifier: Apache-2.0
 Use Terraform or OpenTofu to spin up a high available Rancher Manager
 environment on IONOS Cloud for demo and testing purposes.
 
+It takes on average 10 - 12 minutes to get the infrastructure
+and the Rancher Manager Cluster up and running.
+
 The project leverages the
 [ionoscloud Terraform Provider](https://registry.terraform.io/providers/ionos-cloud/ionoscloud/latest/docs)
 and modules from [tf-rancher-up](https://github.com/rancher/tf-rancher-up).
@@ -19,13 +22,14 @@ and modules from [tf-rancher-up](https://github.com/rancher/tf-rancher-up).
 
 * [Overview](#overview)
 * [Usage](#usage)
-* [Known Issues](#known-issues)
 * [Documentation](#documentation)
 * [Changelog](CHANGELOG.md)
 * [Development](#development)
 * [License](#license)
 
 ## Overview
+
+### Architecture
 
 ![Architecture Diagram - Rancher on IONOS Cloud](assets/Architecture_Diagram_Rancher_on_IONOS_Cloud.png)
 
@@ -58,6 +62,16 @@ Those default values can be adjusted via `terraform.tfvars`.
 
 ## Usage
 
+**Pre requisite**:
+
+Knowledge about
+[Install/Upgrade Rancher on a Kubernetes Cluster](https://ranchermanager.docs.rancher.com/getting-started/installation-and-upgrade/install-upgrade-on-a-kubernetes-cluster)
+and
+[ionoscloud Terraform Provider](https://registry.terraform.io/providers/ionos-cloud/ionoscloud/latest/docs)
+especially to customize the installation if you not want the defaults.
+
+-----
+
 Clone the repository including the sub-module `tf-rancher-up`:
 
 ```
@@ -70,7 +84,7 @@ Required Environment variable:
 IONOS_TOKEN
 ```
 
-Learn more about the IONOS Token how to obtain it:
+Learn more about the IONOS Token and how to obtain it:
 [https://github.com/ionos-cloud/sdk-go#token-authentication](https://github.com/ionos-cloud/sdk-go#token-authentication)
 
 Required `terraform.tfvars` variables:
@@ -89,60 +103,6 @@ to plan, review and perform the deployment.
 
 Further details about the Terraform / OpenTofu code in the Documentation
 section below. Including its [Inputs](#Inputs) and [Outputs](#Outputs).
-
-## Known Issues
-
-### Rancher Helm install race condition
-
-A bug that has to be fixed:
-On first deployment the Rancher Helm install might
-fail because the cluster isn't ready yet.
-
-```
-│ Error: Error checking installed release
-│
-│   with module.rancher_install.helm_release.rancher,
-│   on tf-rancher-up/modules/rancher/main.tf line 115, in resource "helm_release" "rancher":
-│  115: resource "helm_release" "rancher" {
-│
-│ Failed to determine if release exists: Kubernetes cluster unreachable: Get "https://85.215.71.207:6443/version": dial tcp 85.215.71.207:6443: connect: connection refused
-╵
-```
-
-Workaround: Run `terraform apply` or `tofu apply` again.
-At this point, all other resources should be created.
-Only `module.rancher_install.helm_release.rancher`
-is missing to make the Rancher Manager available.
-
-### Pending upstream Pull Requests
-
-Functionality impacted while waiting on two upstream
-Pull Requests to be merged:
-
-* [fix: var.rancher_password is null - Invalid value for "value" parameter: argument must not be null. #217](https://github.com/rancher/tf-rancher-up/pull/217)
-* [feat(rancher): add helm options 'atomic' and 'upgrade_install' #218](https://github.com/rancher/tf-rancher-up/pull/218)
-
-Workaround: Update the git submodule to use the fork
-[https://github.com/wombelix/fork_rancher_tf-rancher-up](https://github.com/wombelix/fork_rancher_tf-rancher-up)
-and checkout the `backports` branch. It contains the
-changes from above pull requests.
-
-```
-# Enter the submodule directory
-cd tf-rancher-up
-
-# Switch the remote URL to the fork
-git remote set-url origin https://github.com/wombelix/fork_rancher_tf-rancher-up.git
-
-# Fetch the data from the new remote
-git fetch origin
-
-# Checkout the specific commit
-git checkout origin/backports
-
-# Return to the project root directory
-cd ..
-```
 
 ## Documentation
 
@@ -199,7 +159,6 @@ cd ..
 | [local_file.kube_config_yaml](https://registry.terraform.io/providers/hashicorp/local/2.6.1/docs/resources/file) | resource |
 | [random_password.sles_image_password](https://registry.terraform.io/providers/hashicorp/random/3.7.2/docs/resources/password) | resource |
 | [random_password.token](https://registry.terraform.io/providers/hashicorp/random/3.7.2/docs/resources/password) | resource |
-| [ssh_resource.reboot_first_server](https://registry.terraform.io/providers/loafoe/ssh/2.7.0/docs/resources/resource) | resource |
 | [ssh_resource.retrieve_kubeconfig](https://registry.terraform.io/providers/loafoe/ssh/2.7.0/docs/resources/resource) | resource |
 | [time_sleep.wait_for_lb_propagation](https://registry.terraform.io/providers/hashicorp/time/0.13.1/docs/resources/sleep) | resource |
 | [cloudinit_config.server_rancher_additional](https://registry.terraform.io/providers/hashicorp/cloudinit/2.3.7/docs/data-sources/config) | data source |
