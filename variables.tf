@@ -86,18 +86,21 @@ variable "server_rancher_cpu_cores" {
   type        = string
   description = "CPU cores assigned to Rancher Manager servers"
   default     = "4"
+  nullable    = false
 }
 
 variable "server_rancher_ram" {
   type        = string
   description = "RAM assigned to Rancher Manager servers"
   default     = "16384"
+  nullable    = false
 }
 
 variable "server_rancher_disk_size" {
   type        = string
   description = "Disk size assigned to Rancher Manager servers"
   default     = "600"
+  nullable    = false
 }
 
 variable "bootstrap_rancher" {
