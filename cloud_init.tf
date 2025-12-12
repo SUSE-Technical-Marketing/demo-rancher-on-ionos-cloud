@@ -108,7 +108,6 @@ data "cloudinit_config" "server_rancher_additional" {
       - zypper --non-interactive dup
       - systemctl daemon-reload
       - systemctl enable --now rke2-installer.service
-      - reboot
     EOT
   }
 }

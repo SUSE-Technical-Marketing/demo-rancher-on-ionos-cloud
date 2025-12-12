@@ -15,8 +15,9 @@ resource "time_sleep" "wait_for_lb_propagation" {
     ionoscloud_networkloadbalancer_forwardingrule.lb_rancher_rule_rke2
   ]
 
-  # Give the LB Rules and the Cluster Nodes another 60 sec to settle
-  create_duration = "60s"
+  # Give the LB Rules and the Cluster Nodes 300 sec to settle
+  # Having all RKE2 nodes ready took 3-5 minutes in test deployments
+  create_duration = "300s"
 }
 
 resource "ssh_resource" "retrieve_kubeconfig" {
@@ -53,6 +54,7 @@ module "rancher_install" {
   rancher_helm_atomic                   = var.rancher_helm_atomic
   cert_manager_enable                   = var.cert_manager_enable
   cert_manager_namespace                = var.cert_manager_namespace
+  cert_manager_version                  = var.cert_manager_version
   cert_manager_helm_repository          = var.cert_manager_helm_repository
   cert_manager_helm_repository_username = var.cert_manager_helm_repository_username
   cert_manager_helm_repository_password = var.cert_manager_helm_repository_password
@@ -69,15 +71,4 @@ module "rancher_install" {
     ["letsEncrypt.environment: ${var.letsencrypt_environment}"],
     var.rancher_additional_helm_values
   ]))
-  cert_manager_version = var.cert_manager_version
-}
-
-# First Server not restarted after cloud-init to not block deployment
-# Doing it now that the other RKE2 cluster nodes are up and Rancher is installed
-resource "ssh_resource" "reboot_first_server" {
-  depends_on = [module.rancher_install]
-  host       = local.first_server_ip
-  commands   = ["reboot"]
-  user       = var.image_ssh_user
-  password   = random_password.sles_image_password.result
 }
