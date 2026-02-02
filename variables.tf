@@ -209,7 +209,7 @@ variable "cert_manager_version" {
   # Fails on >=1.16.0 with 'installCRDs: Invalid type. Expected: boolean, given: string' in tf-rancher-up/modules/rancher/main.tf line 91
   # schema that demands bool introduced, see:
   # https://github.com/cert-manager/cert-manager/blob/v1.16.0/deploy/charts/cert-manager/values.schema.json
-  default  = "1.15.5"
+  default  = "1.15.0"
   type     = string
   nullable = false
 }
