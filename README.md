@@ -72,7 +72,7 @@ especially to customize the installation if you not want the defaults.
 
 -----
 
-Clone the repository including the sub-module `tf-rancher-up`:
+Clone the repository including the [git sub-module](https://git-scm.com/book/en/v2/Git-Tools-Submodules) `tf-rancher-up`:
 
 ```
 git clone --recursive https://github.com/SUSE-Technical-Marketing/demo-rancher-on-ionos-cloud.git
@@ -226,10 +226,23 @@ section below. Including its [Inputs](#Inputs) and [Outputs](#Outputs).
 
 ## Development
 
+Tools recommended to install besides standards like `git` or `make`:
+
+* [ionosctl](https://docs.ionos.com/cli-ionosctl): helps with troubleshooting or to cleanup resources
+* [pre-commit](https://pre-commit.com/): the repo comes with a config to run linters.
+  Install the CLI tool and run once `pre-commit install --install-hooks` to enable it in your local clone.
+* [commitizen](https://commitizen-tools.github.io/commitizen/): `cz` is used to bump the version, generate
+  [CHANGELOG.md](CHANGELOG.md) and cut a new release by running `make release`.
+* [terraform-docs](https://terraform-docs.io/): used to generate the tf documentation in the `README.md`
+  by running `make docs`.
+
+The project uses [REUSE software](https://reuse.software/), a pre-commit hook validates that every
+file contains a valid License header or a `.license` file.
+
 [Makefile](Makefile) commands:
 
-* `docs`: Generate tf docs and inject in README.md
-* `release`: Bump the version, generate a Changelog, tag and push to remote
+* `docs`: generate tf docs and inject in README.md
+* `release`: bump the version, generate a Changelog, tag and push to remote
 
 ## License
 
