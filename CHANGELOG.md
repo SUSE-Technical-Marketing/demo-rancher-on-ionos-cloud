@@ -1,3 +1,9 @@
+## v0.1.1 (2026-02-02)
+
+### Fix
+
+- **variables**: set cert-manager default version to '1.15.0'
+
 ## v0.1.0 (2025-12-12)
 
 ### Feat
